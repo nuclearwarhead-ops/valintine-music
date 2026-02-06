@@ -1,0 +1,701 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>A Question for You... 💖</title>
+    
+    <!-- Google Fonts for Typography -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Nunito:wght@400;700&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --primary-pink: #ff9a9e;
+            --soft-rose: #fad0c4;
+            --deep-rose: #ff6b6b;
+            --lavender: #e0c3fc;
+            --text-color: #555;
+            --card-bg: rgba(255, 255, 255, 0.9);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            user-select: none; /* Prevent text selection during button chasing */
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            font-family: 'Nunito', sans-serif;
+            background: linear-gradient(120deg, #fccb90 0%, #d57eeb 100%);
+            background-size: 400% 400%;
+            animation: gradientBG 15s ease infinite;
+            height: 100vh;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-color);
+            position: relative;
+        }
+
+        /* --- Background Animation --- */
+        @keyframes gradientBG {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        #bg-canvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        /* --- Floating Hearts Background --- */
+        .bg-heart {
+            position: absolute;
+            color: rgba(255, 255, 255, 0.6);
+            bottom: -50px;
+            animation: floatUp linear infinite;
+            font-size: 20px;
+            z-index: 0;
+        }
+
+        @keyframes floatUp {
+            0% { transform: translateY(0) rotate(0deg); opacity: 0; }
+            10% { opacity: 0.8; }
+            100% { transform: translateY(-110vh) rotate(360deg); opacity: 0; }
+        }
+
+        /* --- Main Card --- */
+        .card {
+            background: var(--card-bg);
+            backdrop-filter: blur(10px);
+            padding: 2rem;
+            border-radius: 30px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.15);
+            text-align: center;
+            width: 90%;
+            max-width: 450px;
+            position: relative;
+            z-index: 10;
+            animation: floatCard 6s ease-in-out infinite;
+            transition: opacity 0.3s ease, transform 0.3s ease; /* Speed up exit */
+            min-height: 450px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        @keyframes floatCard {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-15px); }
+        }
+
+        /* --- Kawaii Character --- */
+        .kawaii-heart {
+            width: 120px;
+            height: 120px;
+            margin-bottom: 1rem;
+            animation: heartbeat 2s infinite ease-in-out;
+            position: relative;
+        }
+        
+        /* Inline SVG styling */
+        .kawaii-heart svg {
+            width: 100%;
+            height: 100%;
+            overflow: visible;
+        }
+
+        @keyframes heartbeat {
+            0%, 100% { transform: scale(1); }
+            15% { transform: scale(1.1); }
+            30% { transform: scale(1); }
+            45% { transform: scale(1.1); }
+            60% { transform: scale(1); }
+        }
+
+        /* --- Typography --- */
+        h1 {
+            font-family: 'Great Vibes', cursive;
+            font-size: 3rem;
+            color: var(--deep-rose);
+            margin-bottom: 0.5rem;
+            line-height: 1.2;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .feedback-msg {
+            height: 30px;
+            font-size: 1.1rem;
+            color: #888;
+            margin-bottom: 2rem;
+            font-weight: 700;
+            transition: opacity 0.3s;
+        }
+
+        /* --- Buttons --- */
+        .btn-container {
+            width: 100%;
+            height: 100px;
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            align-items: center;
+        }
+
+        button {
+            border: none;
+            padding: 12px 32px;
+            font-size: 1.2rem;
+            border-radius: 50px;
+            cursor: pointer;
+            font-family: 'Nunito', sans-serif;
+            font-weight: bold;
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        #yes-btn {
+            background: linear-gradient(45deg, #ff9a9e 0%, #ff6b6b 100%);
+            color: white;
+            position: relative; /* Ensure z-index works */
+            z-index: 5;
+        }
+
+        #yes-btn:hover {
+            transform: scale(1.1);
+            box-shadow: 0 10px 25px rgba(255, 107, 107, 0.4);
+        }
+
+        /* Pulse Glow Animation for Yes Button */
+        @keyframes pulse-glow {
+            0% { box-shadow: 0 0 0 0 rgba(255, 107, 107, 0.7); }
+            70% { box-shadow: 0 0 0 20px rgba(255, 107, 107, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(255, 107, 107, 0); }
+        }
+
+        .pulsing {
+            animation: pulse-glow 1.5s infinite;
+        }
+
+        #no-btn {
+            background: #f0f0f0;
+            color: #888;
+            position: relative; /* Starts visible in flow */
+        }
+
+        /* Shake animation class */
+        .shake {
+            animation: shake 0.4s cubic-bezier(.36,.07,.19,.97) both;
+        }
+
+        @keyframes shake {
+            10%, 90% { transform: translate3d(-1px, 0, 0); }
+            20%, 80% { transform: translate3d(2px, 0, 0); }
+            30%, 50%, 70% { transform: translate3d(-4px, 0, 0); }
+            40%, 60% { transform: translate3d(4px, 0, 0); }
+        }
+
+        /* --- Success Screen --- */
+        #success-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(255, 230, 240, 0.95);
+            z-index: 100;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.5s ease; /* Faster transition */
+        }
+
+        #success-screen.visible {
+            opacity: 1;
+            pointer-events: all;
+        }
+
+        .success-content {
+            text-align: center;
+            padding: 2rem;
+            animation: zoomIn 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards; /* Bouncy zoom */
+            max-width: 600px;
+        }
+
+        @keyframes zoomIn {
+            0% { transform: scale(0.5); opacity: 0; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+
+        /* Flash white overlay for impact */
+        #flash-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: white;
+            z-index: 200;
+            pointer-events: none;
+            opacity: 0;
+            transition: opacity 0.5s ease-out;
+        }
+
+        .big-msg {
+            font-family: 'Great Vibes', cursive;
+            font-size: 4rem;
+            color: var(--deep-rose);
+            margin-bottom: 1rem;
+        }
+
+        .sub-msg {
+            font-size: 1.5rem;
+            color: #666;
+            margin-bottom: 2rem;
+        }
+
+        #replay-btn {
+            background: white;
+            color: var(--deep-rose);
+            border: 2px solid var(--deep-rose);
+            margin-top: 2rem;
+        }
+
+        #replay-btn:hover {
+            background: var(--deep-rose);
+            color: white;
+        }
+
+        /* --- Music Controls --- */
+        .music-control {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: rgba(255,255,255,0.7);
+            padding: 10px;
+            border-radius: 50%;
+            cursor: pointer;
+            z-index: 200;
+            font-size: 1.5rem;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+            transition: transform 0.2s;
+        }
+        .music-control:active { transform: scale(0.9); }
+
+        /* --- Canvas for Confetti --- */
+        #confetti-canvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 101;
+        }
+
+        /* Mobile Adjustments */
+        @media (max-width: 600px) {
+            h1 { font-size: 2.5rem; }
+            .card { width: 85%; padding: 1.5rem; min-height: 400px; }
+            .kawaii-heart { width: 100px; height: 100px; }
+            .big-msg { font-size: 3rem; }
+            /* On mobile, reset position of NO button initially so it looks centered */
+            #no-btn { position: relative; } 
+        }
+
+    </style>
+</head>
+<body>
+
+    <!-- Background Elements -->
+    <div id="background-wrapper"></div>
+    <canvas id="bg-canvas"></canvas>
+    <div id="flash-overlay"></div>
+
+    <!-- Main Proposal Card -->
+    <div class="card" id="proposal-card">
+        <!-- Cute Kawaii SVG Character -->
+        <div class="kawaii-heart">
+            <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+                <defs>
+                    <linearGradient id="heartGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                        <stop offset="0%" style="stop-color:#ff9a9e;stop-opacity:1" />
+                        <stop offset="100%" style="stop-color:#ff6b6b;stop-opacity:1" />
+                    </linearGradient>
+                </defs>
+                <path d="M100,180 L88,168 C44,128 15,102 15,69 C15,42 36,21 63,21 C79,21 94,28 100,39 C106,28 121,21 137,21 C164,21 185,42 185,69 C185,102 156,128 112,168 L100,180 Z" fill="url(#heartGrad)" stroke="none"/>
+                <!-- Eyes -->
+                <ellipse cx="70" cy="75" rx="8" ry="12" fill="#4a4a4a"/>
+                <ellipse cx="130" cy="75" rx="8" ry="12" fill="#4a4a4a"/>
+                <!-- Blush -->
+                <circle cx="55" cy="85" r="8" fill="#ffc1c1" opacity="0.6"/>
+                <circle cx="145" cy="85" r="8" fill="#ffc1c1" opacity="0.6"/>
+                <!-- Smile -->
+                <path d="M85,100 Q100,115 115,100" stroke="#4a4a4a" stroke-width="5" fill="none" stroke-linecap="round"/>
+                <!-- Sparkle -->
+                <path d="M150,40 L155,50 L165,55 L155,60 L150,70 L145,60 L135,55 L145,50 Z" fill="#fff" opacity="0.8"/>
+            </svg>
+        </div>
+
+        <h1 id="main-question">Will you be my Valentine?</h1>
+        <p class="feedback-msg" id="feedback-msg"></p>
+
+        <div class="btn-container" id="btn-container">
+            <button id="yes-btn">YES 💖</button>
+            <button id="no-btn">No</button>
+        </div>
+    </div>
+
+    <!-- Success Overlay -->
+    <div id="success-screen">
+        <canvas id="confetti-canvas"></canvas>
+        <div class="success-content">
+            <div class="kawaii-heart" style="margin: 0 auto;">
+                <!-- Reusing the SVG but slightly different face (Happier) -->
+                <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+                    <defs>
+                        <linearGradient id="heartGrad2" x1="0%" y1="0%" x2="100%" y2="100%">
+                            <stop offset="0%" style="stop-color:#ff9a9e;stop-opacity:1" />
+                            <stop offset="100%" style="stop-color:#ff6b6b;stop-opacity:1" />
+                        </linearGradient>
+                    </defs>
+                    <path d="M100,180 L88,168 C44,128 15,102 15,69 C15,42 36,21 63,21 C79,21 94,28 100,39 C106,28 121,21 137,21 C164,21 185,42 185,69 C185,102 156,128 112,168 L100,180 Z" fill="url(#heartGrad2)" stroke="none"/>
+                    <!-- Happy Closed Eyes -->
+                    <path d="M60,75 Q70,65 80,75" stroke="#4a4a4a" stroke-width="4" fill="none" stroke-linecap="round"/>
+                    <path d="M120,75 Q130,65 140,75" stroke="#4a4a4a" stroke-width="4" fill="none" stroke-linecap="round"/>
+                    <!-- Big Open Mouth -->
+                    <path d="M85,95 Q100,120 115,95 Z" fill="#993333"/>
+                </svg>
+            </div>
+            <h1 class="big-msg" id="success-title">YAY!!!</h1>
+            <p class="sub-msg" id="success-sub">I can't wait to make beautiful memories with you 🥰</p>
+            <button id="replay-btn">Talk to me 💬</button>
+        </div>
+    </div>
+
+    <!-- Music Control -->
+    <div class="music-control" id="music-toggle">🔇</div>
+    
+    <!-- AUDIO ELEMENTS -->
+    <!-- Song 1: Plays on the initial screen (Soft Piano) -->
+    <audio id="music-intro" loop preload="auto"></audio>
+    
+    <!-- Song 2: Plays after "Yes" (Happy Upbeat) -->
+    <audio id="music-success" loop preload="auto"></audio>
+
+
+    <script>
+        // ==========================================
+        // 🛠️ PERSONALIZATION VARIABLES
+        // ==========================================
+        const herName = "Ananya"; 
+        const mainQuestionText = `Will you be my Valentine, ${herName}?`;
+        const successTitleText = `YAY! You made me the happiest person alive 💖`;
+
+        // 🎵 MUSIC CONFIGURATION (PASTE YOUR LINKS HERE)
+        // You can use direct MP3 links.
+        // Default Song 1: Soft Piano
+        const song1URL = "https://raw.githubusercontent.com/nuclearwarhead-ops/valintine-music/main/Atif%20Aslam's%20Hona%20Tha%20Pyar%20Hua%20Mere%20Yaar%20-%20Lyrical%20%20Bol%20%20Bollywood%20Love%20Songs%20%20Romantic%20Song.mp3";
+        // Default Song 2: Upbeat Celebration
+        const song2URL = "https://raw.githubusercontent.com/nuclearwarhead-ops/valintine-music/main/Song%202.mp3";
+
+        // ==========================================
+        // 🎭 UI LOGIC
+        // ==========================================
+        
+        // Element Selection
+        const questionEl = document.getElementById('main-question');
+        const feedbackEl = document.getElementById('feedback-msg');
+        const yesBtn = document.getElementById('yes-btn');
+        const noBtn = document.getElementById('no-btn');
+        const btnContainer = document.getElementById('btn-container');
+        const proposalCard = document.getElementById('proposal-card');
+        const successScreen = document.getElementById('success-screen');
+        const successTitle = document.getElementById('success-title');
+        const replayBtn = document.getElementById('replay-btn');
+        const musicToggle = document.getElementById('music-toggle');
+        
+        // Audio Elements
+        const introMusic = document.getElementById('music-intro');
+        const successMusic = document.getElementById('music-success');
+        
+        // Set Audio Sources
+        introMusic.src = song1URL;
+        successMusic.src = song2URL;
+
+        // Apply Text
+        questionEl.innerHTML = mainQuestionText;
+        successTitle.innerHTML = successTitleText;
+
+        // State Variables
+        let noCount = 0;
+        let yesScale = 1;
+        let isMusicPlaying = false;
+        let currentAudio = introMusic; // Tracks which audio should be playing
+
+        const noMessages = [
+            "Are you suuuure? 🥺",
+            "That hurts my little heart 💔",
+            "Try again cutie 😳",
+            "No seems shy today 🙈",
+            "Don't do this to me 😭",
+            "I'll give you chocolate! 🍫",
+            "Think about it... 🤔",
+            "Pretty please? 🌸"
+        ];
+
+        // "No" Button Interaction (The Runaway Logic)
+        const moveNoButton = () => {
+            noBtn.style.position = 'absolute';
+            
+            const cardRect = proposalCard.getBoundingClientRect();
+            const btnRect = noBtn.getBoundingClientRect();
+            
+            const padding = 20;
+            const maxX = cardRect.width - btnRect.width - padding;
+            const maxY = cardRect.height - btnRect.height - padding;
+
+            const randomX = Math.max(padding, Math.random() * maxX);
+            const randomY = Math.max(padding, Math.random() * maxY);
+
+            noBtn.style.left = `${randomX}px`;
+            noBtn.style.top = `${randomY}px`;
+
+            noCount++;
+            yesScale += 0.2; 
+            
+            const currentScale = Math.max(0.6, 1 - (noCount * 0.1));
+            noBtn.style.transform = `scale(${currentScale})`;
+            
+            noBtn.classList.add('shake');
+            setTimeout(() => noBtn.classList.remove('shake'), 400);
+
+            yesBtn.style.transform = `scale(${yesScale})`;
+            
+            if(noCount === 1) {
+                yesBtn.classList.add('pulsing');
+            }
+
+            const randomMsg = noMessages[Math.floor(Math.random() * noMessages.length)];
+            feedbackEl.innerText = randomMsg;
+            feedbackEl.style.opacity = 1;
+        };
+
+        noBtn.addEventListener('mouseover', moveNoButton);
+        noBtn.addEventListener('touchstart', (e) => { e.preventDefault(); moveNoButton(); });
+        noBtn.addEventListener('click', (e) => { e.preventDefault(); moveNoButton(); });
+
+        // "Yes" Button Interaction
+        yesBtn.addEventListener('click', () => {
+            // --- AUDIO LOGIC FIX ---
+            // Stop intro music immediately
+            introMusic.pause();
+            introMusic.currentTime = 0;
+            
+            // Switch current track
+            currentAudio = successMusic;
+            
+            // Force play success music
+            successMusic.play().then(() => {
+                isMusicPlaying = true;
+                musicToggle.innerText = "🎵";
+            }).catch(e => console.log("Audio play failed:", e));
+
+            // Trigger Flash
+            const flash = document.getElementById('flash-overlay');
+            flash.style.opacity = '1';
+            setTimeout(() => { flash.style.opacity = '0'; }, 500);
+
+            // Faster UI Transition
+            proposalCard.style.opacity = '0';
+            proposalCard.style.transform = 'translateY(-50px) scale(0.9)';
+            
+            // Show Success screen almost immediately
+            setTimeout(() => {
+                proposalCard.style.display = 'none';
+                successScreen.classList.add('visible');
+                startRainingHearts();
+            }, 200);
+        });
+
+        // Talk to me Button (WhatsApp Redirect)
+        replayBtn.addEventListener('click', () => {
+            window.location.href = "https://wa.me/917870769691";
+        });
+
+        // Music Logic
+        musicToggle.addEventListener('click', toggleMusic);
+
+        function toggleMusic() {
+            if (isMusicPlaying) {
+                currentAudio.pause();
+                musicToggle.innerText = "🔇";
+            } else {
+                currentAudio.play().catch(e => console.log("Audio play failed pending interaction"));
+                musicToggle.innerText = "🎵";
+            }
+            isMusicPlaying = !isMusicPlaying;
+        }
+
+
+        // ==========================================
+        // ✨ BACKGROUND PARTICLES
+        // ==========================================
+        function createFloatingHeart() {
+            const heart = document.createElement('div');
+            heart.classList.add('bg-heart');
+            heart.innerHTML = Math.random() > 0.5 ? '💖' : '🤍';
+            heart.style.left = Math.random() * 100 + 'vw';
+            heart.style.animationDuration = Math.random() * 3 + 4 + 's';
+            heart.style.fontSize = Math.random() * 20 + 10 + 'px';
+            document.getElementById('background-wrapper').appendChild(heart);
+            setTimeout(() => { heart.remove(); }, 7000);
+        }
+        setInterval(createFloatingHeart, 500);
+
+
+        // ==========================================
+        // 🌧️ RAINING HEARTS ANIMATION
+        // ==========================================
+        const canvas = document.getElementById('confetti-canvas');
+        const ctx = canvas.getContext('2d');
+        let particles = [];
+        let animationId;
+
+        function resizeCanvas() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        }
+        window.addEventListener('resize', resizeCanvas);
+        resizeCanvas();
+
+        class HeartParticle {
+            constructor() {
+                this.x = Math.random() * canvas.width;
+                this.y = Math.random() * canvas.height - canvas.height; // Start above or scattered
+                this.size = Math.random() * 20 + 15; // Bigger hearts
+                this.speedY = Math.random() * 2 + 1; // Smooth fall speed
+                this.speedX = Math.random() * 1 - 0.5; // Slight drift
+                this.rotation = Math.random() * 360;
+                this.rotationSpeed = (Math.random() - 0.5) * 1;
+                this.color = `hsl(${Math.random() * 50 + 330}, 90%, 65%)`; // Pink/Red Hues
+            }
+
+            draw() {
+                ctx.save();
+                ctx.translate(this.x, this.y);
+                ctx.rotate(this.rotation * Math.PI / 180);
+                
+                // Draw heart shape manually for better control/smoothness
+                ctx.beginPath();
+                ctx.fillStyle = this.color;
+                ctx.font = `${this.size}px Arial`;
+                ctx.fillText('❤️', 0, 0);
+                ctx.fill();
+                ctx.restore();
+            }
+
+            update() {
+                this.y += this.speedY;
+                this.x += Math.sin(this.y * 0.01) + this.speedX; // Wavy motion
+                this.rotation += this.rotationSpeed;
+
+                // Reset when off bottom to create infinite rain
+                if (this.y > canvas.height + 50) {
+                    this.y = -50;
+                    this.x = Math.random() * canvas.width;
+                }
+            }
+        }
+
+        function startRainingHearts() {
+            particles = [];
+            // Create a pool of particles
+            for (let i = 0; i < 80; i++) {
+                particles.push(new HeartParticle());
+            }
+            animateHearts();
+        }
+
+        function animateHearts() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            particles.forEach((p) => {
+                p.update();
+                p.draw();
+            });
+            animationId = requestAnimationFrame(animateHearts);
+        }
+
+        // ==========================================
+        // 🌌 SPARKLE BACKGROUND EFFECT
+        // ==========================================
+        const bgCanvas = document.getElementById('bg-canvas');
+        const bgCtx = bgCanvas.getContext('2d');
+        let sparkles = [];
+
+        function resizeBgCanvas() {
+            bgCanvas.width = window.innerWidth;
+            bgCanvas.height = window.innerHeight;
+        }
+        window.addEventListener('resize', resizeBgCanvas);
+        resizeBgCanvas();
+
+        class Sparkle {
+            constructor() {
+                this.x = Math.random() * bgCanvas.width;
+                this.y = Math.random() * bgCanvas.height;
+                this.size = Math.random() * 2;
+                this.opacity = Math.random();
+                this.speedY = Math.random() * 0.5 - 0.25;
+                this.speedX = Math.random() * 0.5 - 0.25;
+            }
+            update() {
+                this.y += this.speedY;
+                this.x += this.speedX;
+                this.opacity += (Math.random() - 0.5) * 0.05;
+                if(this.opacity < 0) this.opacity = 0;
+                if(this.opacity > 1) this.opacity = 1;
+                
+                if(this.x < 0) this.x = bgCanvas.width;
+                if(this.x > bgCanvas.width) this.x = 0;
+                if(this.y < 0) this.y = bgCanvas.height;
+                if(this.y > bgCanvas.height) this.y = 0;
+            }
+            draw() {
+                bgCtx.beginPath();
+                bgCtx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                bgCtx.fillStyle = `rgba(255, 255, 255, ${this.opacity})`;
+                bgCtx.fill();
+            }
+        }
+
+        function initSparkles() {
+            for(let i=0; i<50; i++) sparkles.push(new Sparkle());
+            animateSparkles();
+        }
+
+        function animateSparkles() {
+            bgCtx.clearRect(0, 0, bgCanvas.width, bgCanvas.height);
+            sparkles.forEach(s => { s.update(); s.draw(); });
+            requestAnimationFrame(animateSparkles);
+        }
+        
+        initSparkles();
+    </script>
+</body>
+</html>
